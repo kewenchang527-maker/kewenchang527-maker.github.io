@@ -4,22 +4,193 @@
     <meta charset="UTF-8">
     <title>我的作品集</title>
     <style>
+        /* 极简样式 */
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
-            text-align: center;
+            line-height: 1.6;
         }
-        h1 { color: #333; }
-        img { max-width: 100%; }
+        
+        /* 标题 */
+        .header {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        /* 分类标题 */
+        .category-title {
+            font-size: 1.8em;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        /* 作品网格 */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        
+        /* 作品项 */
+        .work-item {
+            background: white;
+        }
+        
+        .work-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 5px;
+        }
+        
+        .work-info {
+            padding: 10px 0;
+        }
+        
+        .work-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .work-desc {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #888;
+            border-top: 1px solid #eee;
+            margin-top: 40px;
+        }
+        
+        /* 手机适配 */
+        @media (max-width: 600px) {
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>🎉 我的作品集网站</h1>
-    <p>网站正在建设中...</p>
-    <p>这是一个测试页面，确认GitHub Pages正常工作。</p>
-    <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800" alt="示例图片">
-    <p>接下来我会上传我的摄影和绘图作品！</p>
+    <!-- 网站标题 -->
+    <div class="header">
+        <h1>我的作品集</h1>
+        <p>摄影与数字作品展示</p>
+    </div>
+    
+    <!-- 摄影作品 -->
+    <h2 class="category-title">📸 摄影作品</h2>
+    <div class="gallery" id="photography-gallery">
+        <!-- 这里会自动加载摄影作品 -->
+    </div>
+    
+    <!-- 数字作品 -->
+    <h2 class="category-title">🎨 数字作品</h2>
+    <div class="gallery" id="digital-gallery">
+        <!-- 这里会自动加载数字作品 -->
+    </div>
+    
+    <!-- 关于我 -->
+    <div style="max-width: 600px; margin: 0 auto;">
+        <h2>关于我</h2>
+        <p>这里写你的简介...</p>
+        <p>联系方式：你的邮箱@example.com</p>
+    </div>
+    
+    <!-- 页脚 -->
+    <div class="footer">
+        <p>© 2024 你的名字</p>
+    </div>
+    
+    <script>
+        // ========================
+        // 在这里修改你的作品信息！
+        // ========================
+        
+        // 摄影作品数据（修改这里！）
+        const photographyWorks = [
+            {
+                image: "images/photo1.jpg",  // 图片文件名
+                title: "作品标题1",           // 作品标题
+                desc: "作品描述或拍摄信息"    // 作品描述
+            },
+            {
+                image: "images/photo2.jpg",
+                title: "作品标题2",
+                desc: "作品描述"
+            },
+            {
+                image: "images/photo3.jpg",
+                title: "作品标题3",
+                desc: "作品描述"
+            }
+            // 添加更多：复制上面的格式，改数字就行
+        ];
+        
+        // 数字作品数据（修改这里！）
+        const digitalWorks = [
+            {
+                image: "images/digital1.jpg",  // 图片文件名
+                title: "作品标题1",             // 作品标题
+                desc: "作品描述或使用工具"      // 作品描述
+            },
+            {
+                image: "images/digital2.jpg",
+                title: "作品标题2",
+                desc: "作品描述"
+            }
+            // 添加更多：复制上面的格式，改数字就行
+        ];
+        
+        // ========================
+        // 以下代码不要修改！
+        // ========================
+        
+        // 加载作品到页面
+        function loadWorks() {
+            // 加载摄影作品
+            const photoGallery = document.getElementById('photography-gallery');
+            photographyWorks.forEach(work => {
+                photoGallery.innerHTML += `
+                    <div class="work-item">
+                        <img src="${work.image}" alt="${work.title}">
+                        <div class="work-info">
+                            <div class="work-title">${work.title}</div>
+                            <div class="work-desc">${work.desc}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // 加载数字作品
+            const digitalGallery = document.getElementById('digital-gallery');
+            digitalWorks.forEach(work => {
+                digitalGallery.innerHTML += `
+                    <div class="work-item">
+                        <img src="${work.image}" alt="${work.title}">
+                        <div class="work-info">
+                            <div class="work-title">${work.title}</div>
+                            <div class="work-desc">${work.desc}</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', loadWorks);
+    </script>
 </body>
 </html>

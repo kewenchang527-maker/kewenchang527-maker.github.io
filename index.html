@@ -131,21 +131,13 @@
         
         // 摄影作品数据（修改这里！）
         const photographyWorks = [
-            {
-                image: "images/photo1.jpg",  // 图片文件名
-                title: "作品标题1",           // 作品标题
-                desc: "作品描述或拍摄信息"    // 作品描述
-            },
-            {
-                image: "images/photo2.jpg",
-                title: "作品标题2",
-                desc: "作品描述"
-            },
-            {
-                image: "images/photo3.jpg",
-                title: "作品标题3",
-                desc: "作品描述"
-            }
+          {
+            image: "images/yingwuzhou.jpg",  // 图片文件名
+            title: "鹦鹉洲长江大桥",              // 作品标题
+            desc: "📍 中国|湖北|武汉 • 📅 2025年10月",  // 描述：地点+时间
+            fullImageLink: "images/yingwuzhou.jpg",   // 原图链接（与数字作品相同字段名）
+         },
+            
             // 添加更多：复制上面的格式，改数字就行
         ];
         
@@ -191,15 +183,45 @@
         
         // 加载作品到页面
         function loadWorks() {
-            // 加载摄影作品
+            
+            // 加载摄影作品（与数字作品保持一致）
             const photoGallery = document.getElementById('photography-gallery');
             photographyWorks.forEach(work => {
+                // 检查是否有完整图链接（字段名与数字作品相同）
+                let fullImageLinkHTML = '';
+                if (work.fullImageLink) {
+                    fullImageLinkHTML = `
+                        <div style="margin-top: 10px; font-size: 0.9em;">
+                            <p style="color: #666; margin-bottom: 5px;">${work.detailDesc || '查看高清原图'}</p>
+                            <a href="${work.fullImageLink}" 
+                               target="_blank"
+                               style="display: inline-block; 
+                                      padding: 6px 12px;
+                                      background: #f0f0f0;
+                                      color: #333;
+                                      text-decoration: none;
+                                      border-radius: 4px;
+                                      border: 1px solid #ddd;
+                                      font-size: 0.9em;">
+                                🔍 查看完整大图
+                            </a>
+                            <p style="color: #888; font-size: 0.8em; margin-top: 5px;">
+                                （将在新标签页打开）
+                            </p>
+                        </div>
+                    `;
+                }
+                
+                // 确定显示哪个图片（优先用previewImage，兼容两种写法）
+                const displayImage = work.previewImage || work.image;
+                
                 photoGallery.innerHTML += `
                     <div class="work-item">
-                        <img src="${work.image}" alt="${work.title}">
+                        <img src="${displayImage}" alt="${work.title}">
                         <div class="work-info">
                             <div class="work-title">${work.title}</div>
                             <div class="work-desc">${work.desc}</div>
+                            ${fullImageLinkHTML}
                         </div>
                     </div>
                 `;

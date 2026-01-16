@@ -32,6 +32,45 @@
             border-bottom: 2px solid #eee;
         }
         
+         /* 分类标题栏（包含标题和按钮） */
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        /* 折叠按钮 */
+        .toggle-btn {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9em;
+            color: #666;
+            transition: all 0.2s;
+        }
+        
+        .toggle-btn:hover {
+            background: #e0e0e0;
+        }
+        
+        /* 折叠状态 */
+        .gallery.collapsed {
+            display: none;
+        }
+        
+        .toggle-btn.collapsed {
+            transform: rotate(-90deg);
+        }
+        
         /* 作品网格 */
         .gallery {
             display: grid;
@@ -81,6 +120,15 @@
             .gallery {
                 grid-template-columns: 1fr;
             }
+             
+        .category-header {
+                margin: 30px 0 15px;
+            }
+            
+            .toggle-btn {
+                width: 36px;  /* 手机端更大，方便点击 */
+                height: 36px;
+            }
         }
     </style>
 </head>
@@ -91,14 +139,20 @@
         <p>摄影与数字作品展示</p>
     </div>
     
-    <!-- 摄影作品 -->
-    <h2 class="category-title">📸 摄影作品</h2>
+     <!-- 摄影作品 -->
+    <div class="category-header">
+        <h2 class="category-title">📸 摄影作品</h2>
+        <button class="toggle-btn" data-target="photography">▼</button>
+    </div>
     <div class="gallery" id="photography-gallery">
         <!-- 这里会自动加载摄影作品 -->
     </div>
     
     <!-- 数字作品 -->
-    <h2 class="category-title">🎨 数字作品</h2>
+    <div class="category-header">
+        <h2 class="category-title">🎨 数字作品</h2>
+        <button class="toggle-btn" data-target="digital">▼</button>
+    </div>
     <div class="gallery" id="digital-gallery">
         <!-- 这里会自动加载数字作品 -->
     </div>
@@ -345,6 +399,29 @@
                         </div>
                     </div>
                 `;
+            });
+        }
+
+         // 折叠/展开功能
+        function setupToggle() {
+            // 为所有折叠按钮添加点击事件
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const gallery = document.getElementById(`${targetId}-gallery`);
+                    
+                    // 切换显示/隐藏
+                    gallery.classList.toggle('collapsed');
+                    
+                    // 切换按钮箭头方向
+                    if (gallery.classList.contains('collapsed')) {
+                        this.textContent = '▶';  // 向右箭头（折叠状态）
+                        this.classList.add('collapsed');
+                    } else {
+                        this.textContent = '▼';  // 向下箭头（展开状态）
+                        this.classList.remove('collapsed');
+                    }
+                });
             });
         }
         

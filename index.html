@@ -291,7 +291,7 @@
     
     <!-- 点赞区域 -->
     <div style="text-align: center; margin: 50px 0 30px; padding: 30px 0; border-top: 1px solid #eee;">
-        <h3 style="margin-bottom: 20px;">👍 喜欢这个网站吗？</h3>
+        <h3 style="margin-bottom: 20px;">喜欢这个网站吗？</h3>
         
         <!-- 点赞按钮容器 -->
         <div id="likeContainer" style="display: flex; justify-content: center; gap: 15px; margin-bottom: 20px;">
@@ -754,10 +754,22 @@ function setupLikeButton() {
     let hasLiked = localStorage.getItem(`portfolio_liked_${userId}`) === 'true';
     
     // 初始化UI状态
-    function initUI() {
-        updateButtonState();
-        fetchTotalLikes();
+function initUI() {
+    // 先检查本地状态
+    updateButtonState();
+    
+    // 然后获取远程总点赞数
+    fetchTotalLikes();
+    
+    // 初始显示更友好的状态
+    if (hasLiked) {
+        userStatus.textContent = '已点赞';
+        userStatus.style.color = '#ff4757';
+    } else {
+        userStatus.textContent = '未点赞';
+        userStatus.style.color = '#666';
     }
+}
     
     // 更新按钮状态
     function updateButtonState() {
@@ -779,19 +791,21 @@ function setupLikeButton() {
     }
     
     // 获取总点赞数
-    function fetchTotalLikes() {
-        fetch(GET_API)
-            .then(response => response.json())
-            .then(data => {
-                if (data.value !== undefined) {
-                    totalLikes.textContent = data.value;
-                }
-            })
-            .catch(error => {
-                console.error('获取点赞数失败:', error);
-                totalLikes.textContent = '0';
-            });
-    }
+function fetchTotalLikes() {
+    totalLikes.textContent = '加载中...';  // 添加加载状态
+    
+    fetch(GET_API)
+        .then(response => response.json())
+        .then(data => {
+            if (data.value !== undefined) {
+                totalLikes.textContent = data.value;
+            }
+        })
+        .catch(error => {
+            console.error('获取点赞数失败:', error);
+            totalLikes.textContent = '0';
+        });
+}
     
     // 显示消息
     function showMessage(text, isError = false) {
@@ -818,25 +832,28 @@ function setupLikeButton() {
                     return response.json();
                 })
                 .then(data => {
-                    // 更新本地状态
-                    hasLiked = true;
-                    localStorage.setItem(`portfolio_liked_${userId}`, 'true');
-                    
-                    // 更新总点赞数显示
-                    totalLikes.textContent = data.value;
-                    
-                    // 更新UI
-                    updateButtonState();
-                    
-                    // 显示成功消息
-                    showMessage(`点赞成功！总点赞数：${data.value}`);
-                    
-                    // 按钮动画
-                    likeBtn.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        likeBtn.style.transform = 'scale(1)';
-                    }, 150);
-                })
+    // 更新本地状态
+    hasLiked = true;
+    localStorage.setItem(`portfolio_liked_${userId}`, 'true');
+    
+    // 更新总点赞数显示
+    totalLikes.textContent = data.value;
+    
+    // 恢复按钮文字
+    likeBtn.textContent = '👍 点赞';
+    
+    // 更新UI
+    updateButtonState();
+    
+    // 显示成功消息
+    showMessage(`点赞成功！总点赞数：${data.value}`);
+    
+    // 按钮动画
+    likeBtn.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        likeBtn.style.transform = 'scale(1)';
+    }, 150);
+})
                 .catch(error => {
                     console.error('点赞失败:', error);
                     showMessage('点赞失败，请稍后重试', true);
@@ -861,39 +878,42 @@ function setupLikeButton() {
                     if (!response.ok) throw new Error('网络响应不正常');
                     return response.json();
                 })
-                .then(data => {
-                    // 更新本地状态
-                    hasLiked = false;
-                    localStorage.setItem(`portfolio_liked_${userId}`, 'false');
-                    
-                    // 更新总点赞数显示
-                    totalLikes.textContent = data.value;
-                    
-                    // 更新UI
-                    updateButtonState();
-                    
-                    // 显示成功消息
-                    showMessage('已取消点赞');
-                    
-                    // 按钮动画
-                    unlikeBtn.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        unlikeBtn.style.transform = 'scale(1)';
-                    }, 150);
-                })
-                .catch(error => {
-                    console.error('取消点赞失败:', error);
-                    showMessage('取消点赞失败，请稍后重试', true);
-                    
-                    // 如果API调用失败，我们还是更新本地状态
-                    hasLiked = false;
-                    localStorage.setItem(`portfolio_liked_${userId}`, 'false');
-                    updateButtonState();
-                    totalLikes.textContent = newCount;
-                    
-                    unlikeBtn.disabled = false;
-                    unlikeBtn.textContent = '❌ 取消点赞';
-                });
+              .then(data => {
+    // 更新本地状态
+    hasLiked = false;
+    localStorage.setItem(`portfolio_liked_${userId}`, 'false');
+    
+    // 更新总点赞数显示
+    totalLikes.textContent = data.value;
+    
+    // 恢复按钮文字
+    unlikeBtn.textContent = '❌ 取消点赞';
+    
+    // 更新UI
+    updateButtonState();
+    
+    // 显示成功消息
+    showMessage('已取消点赞');
+    
+    // 按钮动画
+    unlikeBtn.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        unlikeBtn.style.transform = 'scale(1)';
+    }, 150);
+})
+               .catch(error => {
+    console.error('取消点赞失败:', error);
+    showMessage('取消点赞失败，请稍后重试', true);
+    
+    // 如果API调用失败，我们还是更新本地状态
+    hasLiked = false;
+    localStorage.setItem(`portfolio_liked_${userId}`, 'false');
+    updateButtonState();
+    totalLikes.textContent = newCount;
+    
+    unlikeBtn.disabled = false;
+    unlikeBtn.textContent = '❌ 取消点赞';  // 确保这行存在
+});
         }
     });
     

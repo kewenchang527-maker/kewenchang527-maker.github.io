@@ -27,9 +27,9 @@
         /* 分类标题 */
         .category-title {
             font-size: 1.8em;
-            margin: 40px 0 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #eee;
+            margin: 0;  /* 改为0 */
+            padding: 0; /* 改为0 */
+            border-bottom: none;  /* 移除下划线 */
         }
         
          /* 分类标题栏（包含标题和按钮） */
@@ -426,7 +426,10 @@
         }
         
         // 页面加载完成后执行
-        document.addEventListener('DOMContentLoaded', loadWorks);
+        document.addEventListener('DOMContentLoaded', function() {
+            loadWorks();
+            setupToggle();  // 添加这一行！
+        });
     </script>
 </body>
 </html>

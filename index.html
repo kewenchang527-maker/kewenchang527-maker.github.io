@@ -290,7 +290,7 @@
 </div>
     
     <!-- 点赞区域 -->
-    <div style="text-align: center; margin: 50px 0 30px; padding: 30px 0; border-top: 1px solid #eee;">
+    <div style="text-align: center; margin: 30px 0 30px; padding: 30px 0; border-top: 1px solid #eee;">
         <h3 style="margin-bottom: 20px;">喜欢这个网站吗？</h3>
         
         <!-- 点赞按钮容器 -->
@@ -787,7 +787,7 @@ function setupLikeButton() {
         }, 3000);
     }
     
-    // 点赞操作
+        // 点赞操作
     likeBtn.addEventListener('click', function() {
         likeBtn.disabled = true;
         likeBtn.textContent = '点赞中...';
@@ -804,23 +804,15 @@ function setupLikeButton() {
             localStorage.setItem(LOCAL_TOTAL_KEY, totalLikeCount);
             localStorage.setItem(LOCAL_USER_LIKED_KEY + '_' + USER_ID, 'true');
             
-            // 更新显示
+            // 更新显示（这会将按钮文字重置为正确状态）
             updateDisplay();
             
             // 显示成功消息
             showMessage(`点赞成功！总点赞数：${totalLikeCount}`);
-            
-            // 按钮动画
-            likeBtn.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                likeBtn.style.transform = 'scale(1)';
-            }, 150);
-            
-            likeBtn.disabled = false;
-        }, 300); // 300ms延迟，模拟网络请求
+        }, 300);
     });
     
-    // 取消点赞操作
+      // 取消点赞操作
     unlikeBtn.addEventListener('click', function() {
         unlikeBtn.disabled = true;
         unlikeBtn.textContent = '取消中...';
@@ -837,25 +829,18 @@ function setupLikeButton() {
             localStorage.setItem(LOCAL_TOTAL_KEY, totalLikeCount);
             localStorage.setItem(LOCAL_USER_LIKED_KEY + '_' + USER_ID, 'false');
             
-            // 更新显示
+            // 更新显示（这会将按钮文字重置为正确状态）
             updateDisplay();
             
             // 显示成功消息
             showMessage('已取消点赞');
-            
-            // 按钮动画
-            unlikeBtn.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                unlikeBtn.style.transform = 'scale(1)';
-            }, 150);
-            
-            unlikeBtn.disabled = false;
-        }, 300); // 300ms延迟，模拟网络请求
+        }, 300);
     });
     
-    // 初始显示
+  // 初始显示
     updateDisplay();
-    showMessage('点赞功能已就绪', true);
+    // 不显示初始消息，避免覆盖操作消息
+    // showMessage('点赞功能已就绪', true);
 }
 
 // 页面加载完成后执行

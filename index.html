@@ -694,6 +694,64 @@ function setupToggle() {
     });
 }
 
+// 点赞功能 - 简单版（点赞不可取消）
+function setupLikeButton() {
+    const likeBtn = document.getElementById('likeBtn');
+    const likeMessage = document.getElementById('likeMessage');
+    
+    // 检查用户是否已经点赞过
+    const HAS_LIKED_KEY = 'website_user_has_liked';
+    let hasLiked = localStorage.getItem(HAS_LIKED_KEY) === 'true';
+    
+    // 如果已经点赞过，直接显示"谢谢你的点赞"
+    if (hasLiked) {
+        likeBtn.textContent = '🙏 谢谢你的点赞';
+        likeBtn.style.background = '#e8f5e9';
+        likeBtn.style.color = '#2e7d32';
+        likeBtn.style.borderColor = '#c8e6c9';
+        likeBtn.disabled = true;
+        likeBtn.style.cursor = 'default';
+    }
+    
+    // 点赞操作
+    likeBtn.addEventListener('click', function() {
+        // 防止重复点击
+        if (hasLiked) return;
+        
+        // 禁用按钮并显示加载状态
+        likeBtn.disabled = true;
+        likeBtn.textContent = '点赞中...';
+        
+        // 模拟网络延迟
+        setTimeout(() => {
+            // 标记用户已点赞
+            hasLiked = true;
+            localStorage.setItem(HAS_LIKED_KEY, 'true');
+            
+            // 更新按钮文字和样式
+            likeBtn.textContent = '🙏 谢谢你的点赞';
+            likeBtn.style.background = '#e8f5e9';
+            likeBtn.style.color = '#2e7d32';
+            likeBtn.style.borderColor = '#c8e6c9';
+            likeBtn.style.cursor = 'default';
+            
+            // 显示成功消息
+            showMessage('感谢您的支持！');
+        }, 300);
+    });
+    
+    // 显示消息函数
+    function showMessage(text) {
+        likeMessage.textContent = text;
+        likeMessage.style.color = '#2e7d32';
+        
+        // 3秒后清空消息
+        setTimeout(() => {
+            likeMessage.textContent = '';
+        }, 3000);
+    }
+}
+
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {
     loadWorks();
@@ -701,6 +759,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         setupToggle();
         bindDigitalToggle();
+        setupLikeButton(); // 添加这一行
     }, 500);
 });
         

@@ -290,7 +290,7 @@
 </div>
     
     <!-- 点赞区域 -->
-    <div style="text-align: center; margin: 30px 0 30px; padding: 30px 0; border-top: 1px solid #eee;">
+    <div style="text-align: center; margin: 30px 0 20px; padding: 30px 0; border-top: 1px solid #eee;">
         <h3 style="margin-bottom: 20px;">喜欢这个网站吗？</h3>
         
                <!-- 点赞按钮 -->
@@ -307,10 +307,7 @@
         ">
             👍 点赞
         </button>
-        
-        <!-- 消息提示 -->
-        <p style="color: #888; font-size: 0.9em; margin-top: 15px; min-height: 24px;" id="likeMessage"></p>
-    </div>
+
     
     <!-- 页脚 -->
     <div class="footer">
@@ -697,7 +694,6 @@ function setupToggle() {
 // 点赞功能 - 简单版（点赞不可取消）
 function setupLikeButton() {
     const likeBtn = document.getElementById('likeBtn');
-    const likeMessage = document.getElementById('likeMessage');
     
     // 检查用户是否已经点赞过
     const HAS_LIKED_KEY = 'website_user_has_liked';
@@ -734,23 +730,11 @@ function setupLikeButton() {
             likeBtn.style.color = '#2e7d32';
             likeBtn.style.borderColor = '#c8e6c9';
             likeBtn.style.cursor = 'default';
-            
-            // 显示成功消息
-            showMessage('感谢您的支持！');
         }, 300);
     });
-    
-    // 显示消息函数
-    function showMessage(text) {
-        likeMessage.textContent = text;
-        likeMessage.style.color = '#2e7d32';
-        
-        // 3秒后清空消息
-        setTimeout(() => {
-            likeMessage.textContent = '';
-        }, 3000);
-    }
 }
+    
+    
 
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {

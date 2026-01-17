@@ -741,12 +741,12 @@ function setupLikeButton() {
     let totalLikeCount = parseInt(localStorage.getItem(LOCAL_TOTAL_KEY)) || 0;
     let hasLiked = localStorage.getItem(LOCAL_USER_LIKED_KEY + '_' + USER_ID) === 'true';
     
-    // 更新显示
+        // 更新显示
     function updateDisplay() {
         // 更新总点赞数
         totalLikes.textContent = totalLikeCount;
         
-        // 更新按钮状态
+        // 更新按钮状态和文字
         if (hasLiked) {
             likeBtn.style.display = 'none';
             unlikeBtn.style.display = 'block';
@@ -754,7 +754,11 @@ function setupLikeButton() {
             userStatus.style.color = '#ff4757';
             likeBtn.disabled = true;
             unlikeBtn.disabled = false;
+            
+            // 确保取消点赞按钮的文字正确
             unlikeBtn.textContent = '❌ 取消点赞';
+            // 确保点赞按钮的文字也正确
+            likeBtn.textContent = '👍 点赞';
         } else {
             likeBtn.style.display = 'block';
             unlikeBtn.style.display = 'none';
@@ -762,7 +766,11 @@ function setupLikeButton() {
             userStatus.style.color = '#666';
             likeBtn.disabled = false;
             unlikeBtn.disabled = true;
+            
+            // 确保点赞按钮的文字正确
             likeBtn.textContent = '👍 点赞';
+            // 确保取消点赞按钮的文字也正确
+            unlikeBtn.textContent = '❌ 取消点赞';
         }
     }
     

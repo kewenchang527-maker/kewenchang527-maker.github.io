@@ -605,8 +605,8 @@
             if (work.fullImageLink) {
 fullImageLinkHTML = `
     <div style="margin-top: 10px; font-size: 0.9em;">
-        <a href="javascript:void(0)" 
-           onclick="openProtectedImage(\"${work.fullImageLink}\")"
+        <a href="${work.fullImageLink}" 
+           target="_blank"
            style="display: inline-block; 
                   padding: 6px 12px;
                   background: #f0f0f0;
@@ -614,8 +614,7 @@ fullImageLinkHTML = `
                   text-decoration: none;
                   border-radius: 4px;
                   border: 1px solid #ddd;
-                  font-size: 0.9em;
-                  cursor: pointer;">
+                  font-size: 0.9em;">
             🔍 查看完整大图
         </a>
         <p style="color: #888; font-size: 0.8em; margin-top: 5px;">
@@ -646,10 +645,10 @@ fullImageLinkHTML = `
         // 检查是否有完整图链接
         let fullImageLinkHTML = '';
         if (work.fullImageLink) {
-       fullImageLinkHTML = `
+   fullImageLinkHTML = `
     <div style="margin-top: 10px; font-size: 0.9em;">
-        <a href="javascript:void(0)" 
-           onclick="openProtectedImage(\"${work.fullImageLink}\")"
+        <a href="${work.fullImageLink}" 
+           target="_blank"
            style="display: inline-block; 
                   padding: 6px 12px;
                   background: #f0f0f0;
@@ -657,8 +656,7 @@ fullImageLinkHTML = `
                   text-decoration: none;
                   border-radius: 4px;
                   border: 1px solid #ddd;
-                  font-size: 0.9em;
-                  cursor: pointer;">
+                  font-size: 0.9em;">
             🔍 查看完整大图
         </a>
         <p style="color: #888; font-size: 0.8em; margin-top: 5px;">

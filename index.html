@@ -209,6 +209,48 @@
         height: 36px;
     }
 }
+
+        /* ============ 大图查看器样式 ============ */
+.full-image-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 9999;
+    display: none;
+}
+
+.full-image-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.full-image {
+    max-width: 100%;
+    max-height: 85vh;
+    display: block;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+}
+
+.full-image-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: white;
+    background: rgba(0,0,0,0.7);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 20px;
+}
         
     </style>
 </head>
@@ -304,7 +346,15 @@
     <div class="footer">
         <p>© 2026 盐</p>
     </div>
-    
+
+            <!-- 大图查看器（防止下载） -->
+    <div class="full-image-overlay" id="fullImageOverlay">
+        <div class="full-image-container">
+            <button class="full-image-close" id="fullImageClose">×</button>
+            <img class="full-image" id="fullImage" src="" alt="">
+        </div>
+    </div>
+        
     <script>
         // ========================
         // 在这里修改你的作品信息！
@@ -553,25 +603,27 @@
         worksByYear[year].forEach(work => {
             let fullImageLinkHTML = '';
             if (work.fullImageLink) {
-                fullImageLinkHTML = `
-                    <div style="margin-top: 10px; font-size: 0.9em;">
-                        <a href="${work.fullImageLink}" 
-                           target="_blank"
-                           style="display: inline-block; 
-                                  padding: 6px 12px;
-                                  background: #f0f0f0;
-                                  color: #333;
-                                  text-decoration: none;
-                                  border-radius: 4px;
-                                  border: 1px solid #ddd;
-                                  font-size: 0.9em;">
-                            🔍 查看完整大图
-                        </a>
-                        <p style="color: #888; font-size: 0.8em; margin-top: 5px;">
-                            （将在新标签页打开）
-                        </p>
-                    </div>
-                `;
+fullImageLinkHTML = `
+    <div style="margin-top: 10px; font-size: 0.9em;">
+        <button onclick="showFullImage('${work.fullImageLink}')"
+                style="display: inline-block; 
+                       padding: 6px 12px;
+                       background: #f0f0f0;
+                       color: #333;
+                       text-decoration: none;
+                       border-radius: 4px;
+                       border: 1px solid #ddd;
+                       font-size: 0.9em;
+                       cursor: pointer;
+                       border: none;
+                       font-family: inherit;">
+            🔍 查看完整大图
+        </button>
+        <p style="color: #888; font-size: 0.8em; margin-top: 5px;">
+            （右键和下载已禁用）
+        </p>
+    </div>
+`;
             }
             
             const displayImage = work.previewImage || work.image;
@@ -595,25 +647,27 @@
         // 检查是否有完整图链接
         let fullImageLinkHTML = '';
         if (work.fullImageLink) {
-            fullImageLinkHTML = `
-                <div style="margin-top: 10px; font-size: 0.9em;">
-                    <a href="${work.fullImageLink}" 
-                       target="_blank"
-                       style="display: inline-block; 
-                              padding: 6px 12px;
-                              background: #f0f0f0;
-                              color: #333;
-                              text-decoration: none;
-                              border-radius: 4px;
-                              border: 1px solid #ddd;
-                              font-size: 0.9em;">
-                        🔍 查看完整大图
-                    </a>
-                    <p style="color: #888; font-size: 0.8em; margin-top: 5px;">
-                        （将在新标签页打开）
-                    </p>
-                </div>
-            `;
+           fullImageLinkHTML = `
+    <div style="margin-top: 10px; font-size: 0.9em;">
+        <button onclick="showFullImage('${work.fullImageLink}')"
+                style="display: inline-block; 
+                       padding: 6px 12px;
+                       background: #f0f0f0;
+                       color: #333;
+                       text-decoration: none;
+                       border-radius: 4px;
+                       border: 1px solid #ddd;
+                       font-size: 0.9em;
+                       cursor: pointer;
+                       border: none;
+                       font-family: inherit;">
+            🔍 查看完整大图
+        </button>
+        <p style="color: #888; font-size: 0.8em; margin-top: 5px;">
+            （右键和下载已禁用）
+        </p>
+    </div>
+`;
         }
         
         // 确定显示哪个图片（优先用previewImage）
@@ -749,7 +803,56 @@ function setupLikeButton() {
     });
 }
     
+ // ============ 大图查看功能 ============
+function showFullImage(imageUrl) {
+    const overlay = document.getElementById('fullImageOverlay');
+    const fullImage = document.getElementById('fullImage');
+    const closeBtn = document.getElementById('fullImageClose');
     
+    // 显示大图
+    fullImage.src = imageUrl;
+    overlay.style.display = 'block';
+    document.body.style.overflow = 'hidden'; // 禁用滚动
+    
+    // 禁用右键
+    fullImage.oncontextmenu = function(e) {
+        e.preventDefault();
+        alert('右键保存已禁用，请尊重版权。');
+        return false;
+    };
+    
+    // 禁用拖拽
+    fullImage.draggable = false;
+    fullImage.ondragstart = function(e) {
+        e.preventDefault();
+        return false;
+    };
+    
+    // 关闭按钮功能
+    closeBtn.onclick = function() {
+        overlay.style.display = 'none';
+        document.body.style.overflow = 'auto'; // 恢复滚动
+        fullImage.src = '';
+    };
+    
+    // 点击背景关闭
+    overlay.onclick = function(e) {
+        if (e.target === overlay) {
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            fullImage.src = '';
+        }
+    };
+    
+    // ESC键关闭
+    document.onkeydown = function(e) {
+        if (e.key === 'Escape' && overlay.style.display === 'block') {
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            fullImage.src = '';
+        }
+    };
+}   
 
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {

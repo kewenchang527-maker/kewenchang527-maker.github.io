@@ -606,7 +606,7 @@
 fullImageLinkHTML = `
     <div style="margin-top: 10px; font-size: 0.9em;">
         <a href="javascript:void(0)" 
-           onclick="openProtectedImage('${work.fullImageLink}')"
+           onclick="openProtectedImage(\"${work.fullImageLink}\")"
            style="display: inline-block; 
                   padding: 6px 12px;
                   background: #f0f0f0;
@@ -646,10 +646,10 @@ fullImageLinkHTML = `
         // 检查是否有完整图链接
         let fullImageLinkHTML = '';
         if (work.fullImageLink) {
-          fullImageLinkHTML = `
+       fullImageLinkHTML = `
     <div style="margin-top: 10px; font-size: 0.9em;">
         <a href="javascript:void(0)" 
-           onclick="openProtectedImage('${work.fullImageLink}')"
+           onclick="openProtectedImage(\"${work.fullImageLink}\")"
            style="display: inline-block; 
                   padding: 6px 12px;
                   background: #f0f0f0;

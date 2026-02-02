@@ -841,7 +841,8 @@ museumWorks.forEach(work => {
         </div>
     `;
 });
-
+}
+        
 // ============ 绑定数字作品折叠功能 ============
 function bindDigitalToggle() {
     const digitalToggleBtn = document.querySelector('[data-target="digital"]');
@@ -890,28 +891,6 @@ function setupToggle() {
             }
         });
     });
-
-    // ============ 子分类折叠功能 ============
-function setupSubcategoryToggle() {
-    document.querySelectorAll('.subcategory-toggle-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const targetId = this.getAttribute('data-target');
-            const content = document.getElementById(`${targetId}-content`);
-            
-            // 切换显示/隐藏
-            content.classList.toggle('collapsed');
-            
-            // 切换按钮箭头方向
-            if (content.classList.contains('collapsed')) {
-                this.textContent = '▶';
-                this.classList.add('collapsed');
-            } else {
-                this.textContent = '▼';
-                this.classList.remove('collapsed');
-            }
-        });
-    });
-}
     
     // ============ 年份折叠代码 ============
     // 为年份折叠按钮添加点击事件
@@ -925,6 +904,28 @@ function setupSubcategoryToggle() {
             
             // 切换按钮箭头方向
             if (yearContent.classList.contains('collapsed')) {
+                this.textContent = '▶';
+                this.classList.add('collapsed');
+            } else {
+                this.textContent = '▼';
+                this.classList.remove('collapsed');
+            }
+        });
+    });
+}  // ← setupToggle函数结束
+
+// ============ 子分类折叠功能 ============
+function setupSubcategoryToggle() {  // ← 现在这是一个独立的函数
+    document.querySelectorAll('.subcategory-toggle-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const content = document.getElementById(`${targetId}-content`);
+            
+            // 切换显示/隐藏
+            content.classList.toggle('collapsed');
+            
+            // 切换按钮箭头方向
+            if (content.classList.contains('collapsed')) {
                 this.textContent = '▶';
                 this.classList.add('collapsed');
             } else {

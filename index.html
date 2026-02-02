@@ -142,12 +142,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 30px 0 15px;
+    margin: 30px 0 15px;  /* 上30px，下15px，与.year-header保持一致 */
     padding: 10px 15px;
     background: #f8f8f8;
     border-radius: 8px;
     border-left: 4px solid #666;
     grid-column: 1 / -1; /* 跨越整个网格 */
+}
+
+/* 特别调整：当子分类内容折叠时，减少下方间距 */
+.subcategory-content.collapsed + .subcategory-header {
+    margin-top: 15px;  /* 当前一个子分类折叠时，上方间距减少 */
 }
 
 .subcategory-title {
